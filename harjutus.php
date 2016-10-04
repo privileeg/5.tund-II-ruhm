@@ -1,7 +1,7 @@
 <?php
 
 	require("functions.php");
-	require("../../../config.php");
+	
 
 	
 	//kui on juba sisse loginud, siis suunan DATA lehele
