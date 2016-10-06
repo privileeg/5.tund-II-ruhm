@@ -103,7 +103,7 @@
 	
 	}
 	
-	function getAllCars() {
+	/*function getAllCars() {
 		
 		$database = "if16_andralla";
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
@@ -136,9 +136,66 @@
 		return $result;
 		
 	}
+	*/
+	function laenutus ($soov, $asukoht, $telefon){
 	
+		$database = "if16_andralla";
+		//yhendus
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 	
+		
+		$stmt = $mysqli->prepare("INSERT INTO laenutus (soov, asukoht, telefon) VALUES (?, ?, ?)");
+		
+		echo $mysqli->error;
+
+		$stmt->bind_param("sss", $soov, $asukoht, $telefon);
+		
 	
+		if($stmt->execute()) {
+			echo "salvestamine õnnestus, laenutuse soov on teele pandud";			
+		} else {
+		 	echo "ERROR ".$stmt->error;
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+	
+	}
+	
+	function getLaenutus() {
+		
+		$database = "if16_andralla";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+		$stmt = $mysqli->prepare("SELECT id, soov, asukoht, telefon FROM laenutus");
+		$stmt->bind_result($id, $soov, $asukoht, $telefon);
+		$stmt->execute();
+		echo $mysqli->error;
+		
+		//tekitan massiivi
+		$result = array();
+		// tee seda seni kuni on rida andmeid
+		// mis vastab select lausele
+		// fetch annab andmeid yhe rea kaupa
+		while ($stmt->fetch()) {
+			
+			//tekitan objekti
+			$laen = new StdClass();
+			
+			$laen -> id = $id;
+			$laen -> soov =$soov;
+			$laen -> asukoht =$asukoht;
+			$laen -> telefon =$telefon;
+			//echo $plate."<br>";
+			// iga kord massiivi lisan juurde nr m2rgi
+			array_push($result, $laen);
+		}
+		
+		$stmt->close();
+		$mysqli->close();
+		
+		return $result;
+		
+	}
 	
 	
 ?>

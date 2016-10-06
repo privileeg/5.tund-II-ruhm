@@ -6,16 +6,15 @@
 	if (!isset($_SESSION["userId"])){
 		
 			//suunan sisselogimise lehele
-			header("location: harjutus.php");
+			header("location: login.php");
 			
-	
 	}
 	
 	//kui on ?logout URLis siis logi välja
 	if (isset($_GET["logout"])){
 		
 		session_destroy();
-		header("Location: harjutus.php");
+		header("Location: login.php");
 		
 	}
 
@@ -29,7 +28,8 @@
 
 	$plateError="";
 	$color="";
-	$plate=$_POST["plate"];
+	$plate="";
+	
 	if(empty($_POST["plate"])){
 			$plateError = "Sisesta number";
 			
@@ -44,10 +44,46 @@
 		
 	//saan auto andmed
 	
-	$carData = getAllCars();
+	/*$carData = getAllCars();
 	echo "<pre>";
 	var_dump($carData);	
 	echo "</pre>";
+	*/
+	$soovError="";
+	$asukohtError="";
+	$telefonError="";
+	$soov="";
+	$asukoht="";
+	$telefon="";
+	
+	if(empty($_POST["soov"])){
+			$soovError = "Mida laenutada soovid?";	
+		}
+
+	if(empty($_POST["asukoht"])){
+			$asukohtError = "Kus sa asud?";			
+		}
+
+	if(empty($_POST["telefon"])){
+			$telefonError = "Palun lisa oma telefoni number";			
+		}
+
+	if ( isset($_POST["soov"]) && 
+		 isset($_POST["asukoht"]) && 
+		 isset($_POST["telefon"]) && 
+		 !empty($_POST["soov"]) &&
+		 !empty($_POST["asukoht"]) &&
+		 !empty($_POST["telefon"])
+		)
+		
+		laenutus($_POST["soov"], $_POST["asukoht"], $_POST["telefon"]);
+
+	//saan andmed laenutatud asjade kohta
+	
+	$laenData = getLaenutus();
+	echo "<pre>";
+	var_dump($laenData);	
+	echo "</pre>";		
 		
 ?>
 
@@ -74,10 +110,62 @@
 	
 </form>
 
-<h2>Autod</h2>
+<form method="POST">
 
-<?php
+<h2>Mida soovid laenutada?</h2>
+
+	<input name="soov" placeholder="Kirjuta siia oma soov" type="text"> <br><br>
+	<input name="asukoht" placeholder="Kus linnas sa asud?" type="text"> <br><br>
+	<label>Telefoni number</label><br>
+	<input name="telefon" type="text"> <br><br>
+	<input type="submit" value="Laenuta">
 	
+</form>
+
+<h3>Laenutatud asjad</h3>
+<?php
+	$html = "<table border='1'>";
+	
+	$html .= "<tr>";
+		$html .= "<th>id</th>";
+		$html .= "<th>soov</th>";
+		$html .= "<th>asukoht</th>";
+		$html .= "<th>telefon</th>";
+	$html .="</tr>";
+	
+	//iga liikme kohta massiivis(laenData)
+	foreach($laenData as $l){
+		//iga laenutus on $l
+		$html .= "<tr>";
+			$html .= "<td>".$l->id."</td>";
+			$html .= "<td>".$l->soov."</td>";
+			$html .= "<td>".$l->asukoht."</td>";
+			$html .= "<td>".$l->telefon."</td>";
+		$html .="</tr>";
+	}
+
+	$html .= "</table>";
+	echo $html;
+
+	//ei soovi seda n2idata, sest see kole ning hetkel puuduvad oskused selle ilustamiseks
+	/*
+	$listHtml = "<br><br>";
+	foreach($laenData as $l){
+	
+		$listHtml .= "<h1>".$l->soov."<h1>";
+		
+	}
+	
+	echo $listHtml
+	*/
+?>
+
+
+<html>
+<!--<h2>Salvestatud autod</h2>-->
+</html>
+<?php
+	/*
 	$html = "<table>";
 	
 	$html .= "<tr>";
@@ -93,14 +181,14 @@
 		$html .= "<tr>";
 			$html .= "<td>".$c->id."</td>";
 			$html .= "<td>".$c->plate."</td>";
-			$html .= "<td style='background-color:#640b33'>".$c->carcolor."</td>"; // v6i style='background-color:"$c->carcolor."'
+			$html .= "<td>".$c->carcolor."</td>"; // v6i style='background-color:"$c->carcolor."'
 		$html .="</tr>";
 	}
 
 	$html .= "</table>";
 	echo $html;
 
-
+	
 	$listHtml = "<br><br>";
 	foreach($carData as $c){
 	
@@ -109,10 +197,7 @@
 	}
 	
 	echo $listHtml
-	
-	
-	
-	
+*/
 ?>
 
 
