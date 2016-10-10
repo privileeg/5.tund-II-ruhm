@@ -13,11 +13,42 @@
 	
 	}
 	
+	$loginEmail="";
+	$loginEmailError="";
+	$loginPasswordError="";	
 	
 	$signupEmailError="";
 	$signupPasswordError="";
+	$signupNameError="";
+	$signupFamilyError="";
+	
+	$signupName="";
+	$signupFamily="";
 	$signupEmail = "";
 	
+	if(isset($_POST["loginEmail"])){
+		
+		if(empty($_POST["loginEmail"])){
+			
+			$loginEmailError="E-mail on sisestamata";
+			
+		}else{
+			
+			$loginEmail=$_POST["loginEmail"];
+		}
+	}
+	
+	if(isset($_POST["loginPassword"])){
+		
+		if(empty($_POST["loginPassword"])){
+			
+			$loginPasswordError="Parool on sisestamata";
+			
+		}else{
+			
+			$loginPassword=$_POST["loginPassword"];
+		}
+	}
 	
 	if(isset($_POST["signupEmail"])){
 		
@@ -37,19 +68,45 @@
 		if(empty($_POST["signupPassword"])){
 			
 			$signupPasswordError = "Parool on kohustuslik";
+			
 		}else{
 			
 			if(strlen($_POST["signupPassword"]) < 8 ) {
 				
-				$signupPasswordError = "Parool peab olema vähemalt 8 tähemärki";
-				
-			}
-			
+				$signupPasswordError = "Parool peab olema vähemalt 8 tähemärki";				
+			}			
 		}
-	
 	}
 	
-	if ( isset($_POST["signupEmail"]) && 
+	if(isset($_POST["signupName"])){
+		
+		if(empty($_POST["signupName"])){
+			
+			$signupNameError="Eesnime sisestamine on kohustuslik";
+			
+		}else{
+			
+			$signupName=$_POST["signupName"];
+		}
+	}
+	
+	if(isset($_POST["signupFamily"])){
+		
+		if(empty($_POST["signupFamily"])){
+			
+			$signupFamilyError="Perenime sisestamine on kohustuslik";
+			
+		}else{
+			
+			$signupFamily=$_POST["signupFamily"];
+		}
+	}
+	
+	
+	
+
+	
+	if ( isset($_POST["signupEmail"]) && isset($_POST["signupName"]) && isset($_POST["signupFamily"]) && 
 		 isset($_POST["signupPassword"]) && 
 		 $signupEmailError == "" && 
 		 empty($signupPasswordError)
@@ -59,7 +116,8 @@
 		echo "Salvestan... <br>";
 		
 		echo "email: ".$signupEmail."<br>";
-		
+		echo "eesnimi: ".$signupName."<br>";
+		echo "perekonnanimi: ".$signupFamily."<br>";
 		
 		$password = hash("sha512", $_POST["signupPassword"]);
 		
@@ -68,10 +126,10 @@
 		
 		//echo $serverUsername;
 		// KASUTAN FUNKTSIOONI
-		signup($signupEmail, $password);
+		signup($signupEmail, $password, $signupName, $signupFamily);
 		
-		
-		/*ÜHENDUS
+		/*
+		ÜHENDUS
 		$database = "if16_andralla";
 		$mysqli = new mysqli($serverHost, $serverUsername, $serverPassword, $database);
 		
@@ -81,7 +139,7 @@
 		}
 		
 		// sqli rida
-		$stmt = $mysqli->prepare("INSERT INTO user_sample (email, password) VALUES (?, ?)");
+		$stmt = $mysqli->prepare("INSERT INTO user_sample (email, password, firstname, familyname) VALUES (?, ?, ?, ?)");
 		
 		echo $mysqli->error;
 		
@@ -90,7 +148,7 @@
 		// integer - i
 		// float (double) - d
 		// küsimärgid asendada muutujaga
-		$stmt->bind_param("ss", $signupEmail, $password);
+		$stmt->bind_param("ssss", $signupEmail, $signupPassword, $signupName, $signupFamily);
 		
 		//täida käsku
 		if($stmt->execute()) {
@@ -148,9 +206,9 @@
 		
 		<input name="signupPassword" placeholder="Parool" type="password"> <?php echo $signupPasswordError; ?> <br><br>
 		
-		<input name="signupName" placeholder="Eesnimi" type="text"> <br><br>
+		<input name="signupName" placeholder="Eesnimi" type="text"> <?php echo $signupNameError; ?> <br><br>
 		
-		<input name="signupFamily" placeholder="Perekonnanimi" type="text"> <br><br>
+		<input name="signupFamily" placeholder="Perekonnanimi" type="text"> <?php echo $signupFamilyError; ?> <br><br>
 		
 		<h4>Vali sugu</h4>
 		
@@ -159,6 +217,8 @@
 		<input type="radio" name="Sugu" value="Naine"> Naine <br>
 		
 		<input type="radio" name="Sugu" value="Muu"> Muu <br><br>
+		
+		<input type="checkbox" name="newsLetter" checked> Soovin ohtralt reklaami oma E-posti <br><br>
 		
 		<input type="submit" value="Registreeru">
 		
