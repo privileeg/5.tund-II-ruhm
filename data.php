@@ -7,7 +7,7 @@
 		
 			//suunan sisselogimise lehele
 			header("location: login.php");
-			
+			exit(); //headerist ainult ei piisa, sest kood k2ivitatakse edasi ikkagi, aga exit'iga mitte
 	}
 	
 	//kui on ?logout URLis siis logi välja
@@ -40,7 +40,7 @@
 		 !empty($_POST["plate"])
 		)
 		
-		savecar($_POST["color"], $_POST["plate"]);
+		savecar(cleanInput($_POST["color"]), cleanInput($_POST["plate"]));
 		
 	//saan auto andmed
 	
@@ -76,7 +76,7 @@
 		 !empty($_POST["telefon"])
 		)
 		
-		laenutus($_POST["soov"], $_POST["asukoht"], $_POST["telefon"]);
+		laenutus(cleanInput($_POST["soov"]), cleanInput($_POST["asukoht"]), cleanInput($_POST["telefon"]));
 
 	//saan andmed laenutatud asjade kohta
 	
@@ -91,11 +91,9 @@
 
 <h1>Data</h1>
 <?=$msg;?>
-<p>Tere tulemas <?=$_SESSION["userEmail"];?>!
+<p>Tere tulemast <a href="user.php"><?=$_SESSION["userEmail"];?>!</a>
 	<br>
 	<a href="?logout=1">Logi välja</a>
-	<br>
-	<p><a href="https://www.postimees.ee">Klikka siia</a> et lugeda Postimeest</p>
 </p> 
 
 
