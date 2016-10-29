@@ -14,7 +14,7 @@
 			die('Connect Error: ' . $mysqli->connect_error);
 		}
 		
-		$stmt = $mysqli->prepare("INSERT INTO user_sample1 (email, password, name, family) VALUES (?, ?, ?, ?)");
+		$stmt = $mysqli->prepare("INSERT INTO user_sample2 (email, password, name, family) VALUES (?, ?, ?, ?)");
 		
 		echo $mysqli->error;
 
@@ -22,7 +22,7 @@
 		
 	
 		if($stmt->execute()) {
-			echo "salvestamine õnnestus";			
+			echo "Saved";			
 		} else {
 		 	echo "ERROR ".$stmt->error;
 		}
@@ -38,7 +38,7 @@
 		
 		$database = "if16_andralla";
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
-		$stmt = $mysqli->prepare("SELECT id, email, password, created FROM user_sample1 WHERE email = ?");
+		$stmt = $mysqli->prepare("SELECT id, email, password, created FROM user_sample2 WHERE email = ?");
 		
 		echo $mysqli->error;
 		
@@ -65,13 +65,13 @@
 				header("Location: data.php");
 			
 			}else{
-				$error = "vale parool";
+				$error = "wrong password";
 			}
 			
 						
 		} else {
 			//ei leidnud kasutajat selle meiliga
-			$error = "ei ole sellist emaili";
+			$error = "e-mail does not exist";
 		}
 		
 		return $error;
@@ -93,7 +93,7 @@
 		
 	
 		if($stmt->execute()) {
-			echo "salvestamine õnnestus";			
+			echo "saved";			
 		} else {
 		 	echo "ERROR ".$stmt->error;
 		}
@@ -137,22 +137,22 @@
 		
 	}
 	*/
-	function laenutus ($soov, $asukoht, $telefon){
+	function renting ($wish, $location, $telephone){
 	
 		$database = "if16_andralla";
 		//yhendus
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 	
 		
-		$stmt = $mysqli->prepare("INSERT INTO laenutus (soov, asukoht, telefon) VALUES (?, ?, ?)");
+		$stmt = $mysqli->prepare("INSERT INTO renting (wish, location, telephone) VALUES (?, ?, ?)");
 		
 		echo $mysqli->error;
 
-		$stmt->bind_param("sss", $soov, $asukoht, $telefon);
+		$stmt->bind_param("sss", $wish, $location, $telephone);
 		
 	
 		if($stmt->execute()) {
-			echo "salvestamine õnnestus, laenutuse soov on teele pandud";			
+			echo "Your wish has been forwarded";			
 		} else {
 		 	echo "ERROR ".$stmt->error;
 		}
@@ -162,12 +162,12 @@
 	
 	}
 	
-	function getLaenutus() {
+	function getRenting() {
 		
 		$database = "if16_andralla";
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
-		$stmt = $mysqli->prepare("SELECT id, soov, asukoht, telefon FROM laenutus");
-		$stmt->bind_result($id, $soov, $asukoht, $telefon);
+		$stmt = $mysqli->prepare("SELECT id, wish, location, telephone FROM renting");
+		$stmt->bind_result($id, $wish, $location, $telephone);
 		$stmt->execute();
 		echo $mysqli->error;
 		
@@ -179,15 +179,15 @@
 		while ($stmt->fetch()) {
 			
 			//tekitan objekti
-			$laen = new StdClass();
+			$loan = new StdClass();
 			
-			$laen -> id = $id;
-			$laen -> soov =$soov;
-			$laen -> asukoht =$asukoht;
-			$laen -> telefon =$telefon;
+			$loan -> id = $id;
+			$loan -> wish =$wish;
+			$loan -> location =$location;
+			$loan -> telephone =$telephone;
 			//echo $plate."<br>";
 			// iga kord massiivi lisan juurde nr m2rgi
-			array_push($result, $laen);
+			array_push($result, $loan);
 		}
 		
 		$stmt->close();
@@ -328,7 +328,7 @@
 		$stmt->bind_param("ii", $_SESSION["userId"], $interest);
 		
 		if($stmt->execute()) {	
-			echo "salvestamine 6nnestus";	
+			echo "saved";	
 		} else {
 			echo "ERROR".$stmt->error;
 		}

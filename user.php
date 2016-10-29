@@ -48,15 +48,15 @@
     $interests = getAllInterests();
 	$Userinterests = getAllUserInterests();
 ?>
-<h1><a href="data.php"> < tagasi</a> Kasutaja leht</h1>
+<h1><a href="data.php"> < back</a>User page</h1>
 <?=$msg;?>
 <p>
-	Tere tulemast <?=$_SESSION["userEmail"];?>!
-	<a href="?logout=1">Logi välja</a>
+	Welcome <?=$_SESSION["userEmail"];?>!
+	<a href="?logout=1">Log out</a>
 </p>
 
 
-<h2>Salvesta hobi</h2>
+<h2>Save your hobby</h2>
 <?php
     
     $listHtml = "<ul>";
@@ -76,19 +76,19 @@
 ?>
 <form method="POST">
 	
-	<label>Hobi/huviala nimi</label><br>
+	<label>Hobby/interest</label><br>
 	<input name="interest" type="text">
 	
-	<input type="submit" value="Salvesta">
+	<input type="submit" value="Save">
 	
 </form>
 
 
 
-<h2>Kasutaja hobid</h2>
+<h2>User hobbies</h2>
 <form method="POST">
 	
-	<label>Hobi/huviala nimi</label><br>
+	<label>Hobby/interest name</label><br>
 	<select name="userInterest" type="text">
         <?php
             
@@ -107,6 +107,6 @@
     </select>
     	
 	
-	<input type="submit" value="Lisa">
+	<input type="submit" value="Add">
 	
 </form> 

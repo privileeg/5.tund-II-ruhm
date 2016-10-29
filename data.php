@@ -31,7 +31,7 @@
 	$plate="";
 	
 	if(empty($_POST["plate"])){
-			$plateError = "Sisesta number";
+			$plateError = "Enter number";
 			
 		}
 	if ( isset($_POST["color"]) && 
@@ -49,40 +49,40 @@
 	var_dump($carData);	
 	echo "</pre>";
 	*/
-	$soovError="";
-	$asukohtError="";
-	$telefonError="";
-	$soov="";
-	$asukoht="";
-	$telefon="";
+	$wishError="";
+	$locationError="";
+	$telephoneError="";
+	$wish="";
+	$location="";
+	$telephone="";
 	
-	if(empty($_POST["soov"])){
-			$soovError = "Mida laenutada soovid?";	
+	if(empty($_POST["wish"])){
+			$wishError = "Mida laenutada soovid?";	
 		}
 
-	if(empty($_POST["asukoht"])){
-			$asukohtError = "Kus sa asud?";			
+	if(empty($_POST["location"])){
+			$locationError = "What is your location?";			
 		}
 
-	if(empty($_POST["telefon"])){
-			$telefonError = "Palun lisa oma telefoni number";			
+	if(empty($_POST["telephone"])){
+			$telephoneError = "Please add your telephone number";			
 		}
 
-	if ( isset($_POST["soov"]) && 
-		 isset($_POST["asukoht"]) && 
-		 isset($_POST["telefon"]) && 
-		 !empty($_POST["soov"]) &&
-		 !empty($_POST["asukoht"]) &&
-		 !empty($_POST["telefon"])
+	if ( isset($_POST["wish"]) && 
+		 isset($_POST["location"]) && 
+		 isset($_POST["telephone"]) && 
+		 !empty($_POST["wish"]) &&
+		 !empty($_POST["location"]) &&
+		 !empty($_POST["telephone"])
 		)
 		
-		laenutus(cleanInput($_POST["soov"]), cleanInput($_POST["asukoht"]), cleanInput($_POST["telefon"]));
+		renting(cleanInput($_POST["wish"]), cleanInput($_POST["location"]), cleanInput($_POST["telephone"]));
 
 	//saan andmed laenutatud asjade kohta
 	
-	$laenData = getLaenutus();
+	$loanData = getRenting();
 	echo "<pre>";
-	var_dump($laenData);	
+	var_dump($loanData);	
 	echo "</pre>";		
 		
 ?>
@@ -91,16 +91,16 @@
 
 <h1>Data</h1>
 <?=$msg;?>
-<p>Tere tulemast <a href="user.php"><?=$_SESSION["userEmail"];?>!</a>
+<p>Welcome <a href="user.php"><?=$_SESSION["userEmail"];?>!</a>
 	<br>
-	<a href="?logout=1">Logi välja</a>
+	<a href="?logout=1">Log out</a>
 </p> 
 
 
 
 <form method="POST">
 
-<h2>Salvesta auto andmed</h2>
+<h2>Save car data</h2>
 
 	<input name="plate" placeholder="123 ABC" type="text"> <br><br>
 	<input name="color" type="color"> <br><br>
@@ -110,35 +110,35 @@
 
 <form method="POST">
 
-<h2>Mida soovid laenutada?</h2>
+<h2>What would you like to borrow ?</h2>
 
-	<input name="soov" placeholder="Kirjuta siia oma soov" type="text"> <br><br>
-	<input name="asukoht" placeholder="Kus linnas sa asud?" type="text"> <br><br>
-	<label>Telefoni number</label><br>
-	<input name="telefon" type="text"> <br><br>
-	<input type="submit" value="Laenuta">
+	<input name="wish" placeholder="Enter your wish" type="text"> <br><br>
+	<input name="location" placeholder="In which city you are located at" type="text"> <br><br>
+	<label>Telephone number</label><br>
+	<input name="telephone" type="text"> <br><br>
+	<input type="submit" value="Submit">
 	
 </form>
 
-<h3>Laenutatud asjad</h3>
+<h3>Borrowed things</h3>
 <?php
 	$html = "<table border='1'>";
 	
 	$html .= "<tr>";
 		$html .= "<th>id</th>";
-		$html .= "<th>soov</th>";
-		$html .= "<th>asukoht</th>";
-		$html .= "<th>telefon</th>";
+		$html .= "<th>wish</th>";
+		$html .= "<th>location</th>";
+		$html .= "<th>telephone</th>";
 	$html .="</tr>";
 	
 	//iga liikme kohta massiivis(laenData)
-	foreach($laenData as $l){
+	foreach($loanData as $l){
 		//iga laenutus on $l
 		$html .= "<tr>";
 			$html .= "<td>".$l->id."</td>";
-			$html .= "<td>".$l->soov."</td>";
-			$html .= "<td>".$l->asukoht."</td>";
-			$html .= "<td>".$l->telefon."</td>";
+			$html .= "<td>".$l->wish."</td>";
+			$html .= "<td>".$l->location."</td>";
+			$html .= "<td>".$l->telephone."</td>";
 		$html .="</tr>";
 	}
 

@@ -30,7 +30,7 @@
 		
 		if(empty($_POST["loginEmail"])){
 			
-			$loginEmailError="E-mail on sisestamata";
+			$loginEmailError="E-mail is missing";
 			
 		}else{
 			
@@ -42,7 +42,7 @@
 		
 		if(empty($_POST["loginPassword"])){
 			
-			$loginPasswordError="Parool on sisestamata";
+			$loginPasswordError="Password is missing";
 			
 		}else{
 			
@@ -54,7 +54,7 @@
 		
 		if(empty($_POST["signupEmail"])){
 			
-			$signupEmailError = "E-post on kohustuslik";
+			$signupEmailError = "E-mail is required ";
 		
 		}else{
 			
@@ -67,13 +67,13 @@
 		
 		if(empty($_POST["signupPassword"])){
 			
-			$signupPasswordError = "Parool on kohustuslik";
+			$signupPasswordError = "Password is required";
 			
 		}else{
 			
 			if(strlen($_POST["signupPassword"]) < 8 ) {
 				
-				$signupPasswordError = "Parool peab olema vähemalt 8 tähemärki";				
+				$signupPasswordError = "Password needs to be atleast 8 characters";				
 			}			
 		}
 	}
@@ -82,7 +82,7 @@
 		
 		if(empty($_POST["signupName"])){
 			
-			$signupNameError="Eesnime sisestamine on kohustuslik";
+			$signupNameError="First name is required";
 			
 		}else{
 			
@@ -94,7 +94,7 @@
 		
 		if(empty($_POST["signupFamily"])){
 			
-			$signupFamilyError="Perenime sisestamine on kohustuslik";
+			$signupFamilyError="Family name is required";
 			
 		}else{
 			
@@ -113,11 +113,11 @@
 		) {
 		
 		// salvestame ab'i
-		echo "Salvestan... <br>";
+		echo "Saving... <br>";
 		
 		echo "email: ".$signupEmail."<br>";
-		echo "eesnimi: ".$signupName."<br>";
-		echo "perekonnanimi: ".$signupFamily."<br>";
+		echo "first name: ".$signupName."<br>";
+		echo "family name: ".$signupFamily."<br>";
 		
 		$password = hash("sha512", $_POST["signupPassword"]);
 		
@@ -179,48 +179,48 @@
 
 <html>
 <head>
-	<title>Logi sisse voi registreeru</title>
+	<title>Log in or register</title>
 </head>
 
-<body>
-	<h2>Logi sisse</h2>
+<body style="background-color:grey; font-family: verdana">
+	<center><h2>Log in</h2>
 	
-	<form method="POST"> <!--POST ei kuva paroole ega asi URL'is-->
+	<center><form method="POST"> <!--POST ei kuva paroole ega asi URL'is-->
 		
 		<p style="color:red;"><?=$error;?></p>
 		
-		<input name="loginEmail" placeholder="E-post" type="text"><br><br>
+		<input name="loginEmail" placeholder="E-mail" type="text"><br><br>
 		
-		<input name="loginPassword" placeholder="Parool" type="password"><br><br>
+		<input name="loginPassword" placeholder="Password" type="password"><br><br>
 
-		<input type="submit" value="Logi sisse">
+		<input type="submit" value="Log in">
 		
 	</form>
 
 	
-	<h2>Registreeru</h2>
+	<h2>Register</h2>
 	
 	<form method="POST">
 		
-		<input name="signupEmail" placeholder="E-post" type="text"> <?php echo $signupEmailError; ?> <br><br>
+		<input name="signupEmail" placeholder="E-mail" type="text" value="<?=$signupEmail;?>"> <?php echo $signupEmailError; ?> <br><br>
 		
-		<input name="signupPassword" placeholder="Parool" type="password"> <?php echo $signupPasswordError; ?> <br><br>
+		<input name="signupPassword" placeholder="Password" type="password"> <?php echo $signupPasswordError; ?> <br><br>
 		
-		<input name="signupName" placeholder="Eesnimi" type="text"> <?php echo $signupNameError; ?> <br><br>
+		<input name="signupName" placeholder="First name" type="text"> <?php echo $signupNameError; ?> <br><br>
 		
-		<input name="signupFamily" placeholder="Perekonnanimi" type="text"> <?php echo $signupFamilyError; ?> <br><br>
+		<input name="signupFamily" placeholder="Family name" type="text"> <?php echo $signupFamilyError; ?> <br><br>
 		
-		<h4>Vali sugu</h4>
+		<h4>Gender</h4>
 		
-		<input type="radio" name="Sugu" value="Mees" checked> Mees <br>
+		<input type="radio" name="Sugu" value="Male" checked> Male <br>
 		
-		<input type="radio" name="Sugu" value="Naine"> Naine <br>
+		<input type="radio" name="Sugu" value="Female"> Female <br>
 		
-		<input type="radio" name="Sugu" value="Muu"> Muu <br><br>
+		<input type="radio" name="Sugu" value="Other"> Other <br><br>
 		
-		<input type="checkbox" name="newsLetter" checked> Soovin ohtralt reklaami oma E-posti <br><br>
+		<input type="checkbox" name="newsLetter" checked> I would like to get a lot of spam mails  <br><br>
 		
-		<input type="submit" value="Registreeru">
+		<input type="submit" value="Register">
 		
 	</form>
 	
